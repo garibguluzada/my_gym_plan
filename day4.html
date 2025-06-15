@@ -18,66 +18,111 @@
         <div class="exercise-section">
             <div class="exercise-title">1. T-Bar Row</div>
             <div class="exercise-reps">4 x 8–10</div>
-            <video src="./media/mp4/T-Bar Row.mp4" controls width="400" height="300" muted loop></video>
+            <video src="./media/mp4/T-Bar Row.mp4" controls width="400" height="300" muted loop preload="none"></video>
         </div>
         
         <div class="exercise-section">
             <div class="exercise-title">2. Lat Pulldowns (or Pull-ups)</div>
             <div class="exercise-reps">3 x 10</div>
-            <video src="./media/mp4/Lat Pulldown.mp4" controls width="400" height="300" muted loop></video>
+            <video src="./media/mp4/Lat Pulldown.mp4" controls width="400" height="300" muted loop preload="none"></video>
         </div>
         
         <div class="exercise-section">
             <div class="exercise-title">3. Seated Row (Cable or Machine)</div>
             <div class="exercise-reps">3 x 12</div>
-            <video src="./media/mp4/Cable Row.mp4" controls width="400" height="300" muted loop></video>
+            <video src="./media/mp4/Cable Row.mp4" controls width="400" height="300" muted loop preload="none"></video>
         </div>
         
         <div class="exercise-section">
             <div class="exercise-title">4. Dumbbell Bicep Curls</div>
             <div class="exercise-reps">3 x 12</div>
-            <video src="./media/mp4/Dumbbell Bicep Curls.mp4" controls width="400" height="300" muted loop></video>
+            <video src="./media/mp4/Dumbbell Bicep Curls.mp4" controls width="400" height="300" muted loop preload="none"></video>
         </div>
         
         <div class="exercise-section">
             <div class="exercise-title">5. Hammer Curls</div>
             <div class="exercise-reps">3 x 12</div>
-            <video src="./media/mp4/Hammer Curls.mp4" controls width="400" height="300" muted loop></video>
+            <video src="./media/mp4/Hammer Curls.mp4" controls width="400" height="300" muted loop preload="none"></video>
         </div>
         
         <div class="exercise-section">
             <div class="exercise-title">6. Face Pulls</div>
             <div class="exercise-reps">3 x 15</div>
-            <video src="./media/mp4/Face Pulls.mp4" controls width="400" height="300" muted loop></video>
+            <video src="./media/mp4/Face Pulls.mp4" controls width="400" height="300" muted loop preload="none"></video>
         </div>
     </div>
 
     <script>
-        // Intersection Observer for video autoplay
-        const videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const video = entry.target;
-                if (entry.isIntersecting) {
-                    // Video is in view, play it
-                    video.play().then(() => {
-                        video.classList.add('playing');
-                    }).catch(err => {
-                        console.log('Video autoplay failed:', err);
-                    });
-                } else {
-                    // Video is out of view, pause it
-                    video.pause();
-                    video.classList.remove('playing');
-                }
+        // Lazy loading and viewport-based video handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const videos = document.querySelectorAll('video');
+            
+            // Prevent fullscreen on mobile
+            videos.forEach(video => {
+                // Prevent fullscreen mode
+                video.addEventListener('webkitbeginfullscreen', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+                
+                video.addEventListener('webkitendfullscreen', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+                
+                // Prevent default fullscreen behavior
+                video.addEventListener('click', function(e) {
+                    if (video.paused) {
+                        video.play().catch(err => {
+                            console.log('Video play failed:', err);
+                        });
+                    } else {
+                        video.pause();
+                    }
+                    e.preventDefault();
+                });
             });
-        }, {
-            threshold: 0.5, // Trigger when 50% of video is visible
-            rootMargin: '0px 0px -100px 0px' // Start playing slightly before video is fully in view
-        });
+            
+            // Intersection Observer for lazy loading and autoplay
+            if ('IntersectionObserver' in window) {
+                const videoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const video = entry.target;
+                        if (entry.isIntersecting) {
+                            // Video is in view - load and play
+                            if (video.readyState === 0) {
+                                // Video not loaded yet, load it first
+                                video.load();
+                                video.addEventListener('loadeddata', function() {
+                                    video.play().then(() => {
+                                        video.classList.add('playing');
+                                    }).catch(err => {
+                                        console.log('Video autoplay failed:', err);
+                                    });
+                                }, { once: true });
+                            } else {
+                                // Video already loaded, just play
+                                video.play().then(() => {
+                                    video.classList.add('playing');
+                                }).catch(err => {
+                                    console.log('Video autoplay failed:', err);
+                                });
+                            }
+                        } else {
+                            // Video is out of view - pause
+                            video.pause();
+                            video.classList.remove('playing');
+                        }
+                    });
+                }, {
+                    threshold: 0.3, // Trigger when 30% of video is visible
+                    rootMargin: '0px 0px -50px 0px' // Start loading slightly before video is fully in view
+                });
 
-        // Observe all videos
-        document.querySelectorAll('video').forEach(video => {
-            videoObserver.observe(video);
+                videos.forEach(video => {
+                    videoObserver.observe(video);
+                });
+            }
         });
     </script>
 </body>
