@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1 - Upper Body Push | GYM Plan</title>
+    <link rel="stylesheet" href="./styles.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html"><h1>GYM Plan</h1></a>
+        
+        <h2>Day 1 - Upper Body Push (Chest, Shoulders, Triceps)</h2>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">1. Bench Press (Barbell or Dumbbell)</div>
+            <div class="exercise-reps">4 x 8–10</div>
+            <video src="./media/mp4/Barbell Bench Press - OPEX Exercise Library.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">2. Shoulder Press (Seated or Standing)</div>
+            <div class="exercise-reps">4 x 10</div>
+            <video src="./media/mp4/Shoulder Press Variations.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">3. Incline Dumbbell Press</div>
+            <div class="exercise-reps">3 x 10–12</div>
+            <video src="./media/mp4/Incline Dumbbell Chest Press.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">4. Lateral Raises</div>
+            <div class="exercise-reps">3 x 15</div>
+            <video src="./media/mp4/Lateral Raise.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">5. Cable Triceps Pushdown</div>
+            <div class="exercise-reps">3 x 12–15</div>
+            <video src="./media/mp4/Cable Triceps Pushdown.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+    </div>
+
+    <script>
+        // Intersection Observer for video autoplay
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    // Video is in view, play it
+                    video.play().then(() => {
+                        video.classList.add('playing');
+                    }).catch(err => {
+                        console.log('Video autoplay failed:', err);
+                    });
+                } else {
+                    // Video is out of view, pause it
+                    video.pause();
+                    video.classList.remove('playing');
+                }
+            });
+        }, {
+            threshold: 0.5, // Trigger when 50% of video is visible
+            rootMargin: '0px 0px -100px 0px' // Start playing slightly before video is fully in view
+        });
+
+        // Observe all videos
+        document.querySelectorAll('video').forEach(video => {
+            videoObserver.observe(video);
+        });
+    </script>
+</body>
+
+</html>

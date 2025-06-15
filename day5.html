@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 5 - Full Body + Core | GYM Plan</title>
+    <link rel="stylesheet" href="./styles.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html"><h1>GYM Plan</h1></a>
+        
+        <h2>Day 5 - Full Body + Core</h2>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">1. Dumbbell Thrusters (Squat to Overhead Press)</div>
+            <div class="exercise-reps">3-4 x 10-12</div>
+            <video src="./media/mp4/Dumbbell Squat Press.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">2. Front Squats</div>
+            <div class="exercise-reps">3 x 10</div>
+            <video src="./media/mp4/Front Squat.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">3. Push-Ups</div>
+            <div class="exercise-reps">3 x 12</div>
+            <video src="./media/mp4/Pushups.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">4. Hanging Leg Raises</div>
+            <div class="exercise-reps">3 x 15</div>
+            <video src="./media/mp4/Hanging leg raises.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">5. Russian Twists</div>
+            <div class="exercise-reps">3 x 20 (10/side)</div>
+            <video src="./media/mp4/russian twist.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">6. Plank</div>
+            <div class="exercise-reps">3 x 1 min</div>
+            <video src="./media/mp4/plank.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+    </div>
+
+    <script>
+        // Intersection Observer for video autoplay
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    // Video is in view, play it
+                    video.play().then(() => {
+                        video.classList.add('playing');
+                    }).catch(err => {
+                        console.log('Video autoplay failed:', err);
+                    });
+                } else {
+                    // Video is out of view, pause it
+                    video.pause();
+                    video.classList.remove('playing');
+                }
+            });
+        }, {
+            threshold: 0.5, // Trigger when 50% of video is visible
+            rootMargin: '0px 0px -100px 0px' // Start playing slightly before video is fully in view
+        });
+
+        // Observe all videos
+        document.querySelectorAll('video').forEach(video => {
+            videoObserver.observe(video);
+        });
+    </script>
+</body>
+
+</html>

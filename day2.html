@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2 - Lower Body | GYM Plan</title>
+    <link rel="stylesheet" href="./styles.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html">
+            <h1>GYM Plan</h1>
+        </a>
+        
+        <h2>Day 2 – Lower Body (Legs, Glutes)</h2>
+        
+        <div class="exercise-section">
+            <div class="exercise-title">1. Barbell Squats</div>
+            <div class="exercise-reps">4 x 8–10</div>
+            <video src="./media/mp4/Barbell Squats.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+
+        <div class="exercise-section">
+            <div class="exercise-title">2. Romanian Deadlifts</div>
+            <div class="exercise-reps">4 x 10</div>
+            <video src="./media/mp4/Romanian Deadlift.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+
+        <div class="exercise-section">
+            <div class="exercise-title">3. Walking Lunges</div>
+            <div class="exercise-reps">3 x 12 each leg</div>
+            <video src="./media/mp4/Walking Lunges.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+
+        <div class="exercise-section">
+            <div class="exercise-title">4. Hip Thrusts (Barbell or Machine)</div>
+            <div class="exercise-reps">4 x 12</div>
+            <video src="./media/mp4/Hip Thrusts.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+
+        <div class="exercise-section">
+            <div class="exercise-title">5. Leg Press</div>
+            <div class="exercise-reps">3 x 10</div>
+            <video src="./media/mp4/Leg Press.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+
+        <div class="exercise-section">
+            <div class="exercise-title">6. Calf Raises</div>
+            <div class="exercise-reps">4 x 15</div>
+            <video src="./media/mp4/CALF RAISE.mp4" controls width="400" height="300" muted loop></video>
+        </div>
+    </div>
+
+    <script>
+        // Intersection Observer for video autoplay
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    // Video is in view, play it
+                    video.play().then(() => {
+                        video.classList.add('playing');
+                    }).catch(err => {
+                        console.log('Video autoplay failed:', err);
+                    });
+                } else {
+                    // Video is out of view, pause it
+                    video.pause();
+                    video.classList.remove('playing');
+                }
+            });
+        }, {
+            threshold: 0.5, // Trigger when 50% of video is visible
+            rootMargin: '0px 0px -100px 0px' // Start playing slightly before video is fully in view
+        });
+
+        // Observe all videos
+        document.querySelectorAll('video').forEach(video => {
+            videoObserver.observe(video);
+        });
+    </script>
+</body>
+
+</html>
